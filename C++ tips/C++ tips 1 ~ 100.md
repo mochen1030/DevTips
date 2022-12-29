@@ -150,6 +150,280 @@ int const *q;
 
 
 
+#### void 指针
+
+##### void
+
+*   函数无返回值，返回类型为 void
+*   函数无参数，参数列表为 void，通常省略
+*   void 类型的变量无意义，一般编译器会报错。把变量强制转换成 void，可以避免参数未使用的警告
+
+##### void\*
+
+*   函数返回值类型是 void\*，可以返回任何类型的指针，但必须返回一个指针。可以返回为空指针，但是不能返回为空。
+*   函数的参数类型是 void\*，可以传递任何类型的指针
+*   void\* 类型的指针无类型，可以被任何类型的指针赋值。
+
+##### Tips
+
+1.  void\* 指针需要强制类型转换之后才可以赋值/传参给其他类型的指针，反之不需要
+2.  void\* 指针可以直接和其他类型的指针进行地址的比对
+3.  void\* 指针需要强制类型转换之后才可以对其进行操作
+4.  void\* 指针可以初始化为空指针 nullptr
+5.  void\* 指针不能进行算术操作
+
+
+
+#### 函数指针
+
+##### 基本概念
+
+* 指针函数：指针函数本质是函数，该函数的返回值类型是指针。
+
+    ```c++
+    QPushButton* generateButton(const QString& qsText)
+    {
+        QPushButton\* btn = new QPushButton();
+        btn->setText(qsText);
+        return btn;
+    }
+    ```
+
+* 函数指针：函数指针本质是指针，该指针指向某一函数的首地址。
+
+        #include <iostream>
+        
+        int testFuntion(int a, int b)
+        {
+            return a + b;
+        }
+        
+        int func(int c, int d, int (*pFunc)(int, int))
+        {
+            return (*pFunc)(c, d);
+            // return pFunc(c, d);
+        }
+        
+        int main(int argc, char* argv[])
+        {
+            // 声明一个函数指针，并用函数名初始化，该指针指向函数 testFuntion 的首地址
+            // C++ 会隐式地将函数名 testFuntion 转换成 &testFuntion，所以函数指针初始化的时候可以省略 &
+            int (*ptr)(int, int);
+            ptr = testFuntion;
+            
+            // 也可以像一般指针类型一样直接声明并初始化
+            // int (*ptr)(int, int) = testFuntion;    
+        
+            // 输出地址内容一致（可能会输出1或true，取决于是否用了boolalpha，因为隐式转换到bool）
+            std::cout << "testFuntion:" << testFuntion << std::endl;
+            std::cout << "ptr:" << ptr << std::endl;
+        
+            // 通过函数指针调用函数
+            std::cout << "ptr result:" << (*ptr)(10, 5) << std::endl;   //建议写法
+            std::cout << "ptr result:" << ptr(10, 5) << std::endl;      //一般编译器不会报错
+        
+            // 这样类似于函数指针分方式调用函数也是可以的，但是不建议这么写
+            std::cout << "testFuntion result:" << (*testFuntion)(10, 5) << std::endl;
+            std::cout << "testFuntion result:" << testFuntion(10, 5) << std::endl;
+        
+            // 函数指针作为函数的参数传递
+            std::cout << "func:" << func(99, 111, ptr) << std::endl;
+            std::cout << "func:" << func(99, 111, testFuntion) << std::endl;
+        
+            return 0;
+        |
+
+##### Tips:
+
+1. 函数指针的返回值类型，参数列表必须和其指向的函数保持一直，参数名可以省略。
+
+2. 只要返回值类型，参数列表一致，同一函数指针可以指向不同的函数。
+
+3. 函数指针如果只由基本内置类型组合而成，则可以像基本类型指针一样直接声明使用，而不是像类一样必须先存在此类，才能声明此类的指针。
+
+4. 函数指针在回调函数中使用较多
+
+5. typedef 简化函数指针的定义
+
+    ```
+    int func(int a, double c, char* c);
+    {
+        ...
+        return 0;
+    }
+    
+    int main(int argc, char *argv[])
+    {
+        // 利用 typedef 将函数指针声明成一个类型，此类型名为FuncPtr，函数指针名名为 ptr
+        typedef int (*FuncPtr)(int a, double c, char* c);
+        FuncPtr ptr = func;
+    
+        // 并未将函数指针声明成一个类型，此函数指针名就是 ptr
+        // int (*ptr)(int a, double c, char* c) = func;
+    
+        return 0;
+    }
+    ```
+
+
+
+#### 野指针
+
+- 指针未初始化
+
+    指针被创建但是未初始化，因为其缺省值是随机的，所以指针不会默认被初始化为空指针，而是会随机指向其他内存块。
+
+- 指针析构后未置空
+
+    free 或 delete 指针之后，需要手动将指针置空（nullptr）。析构指针只是将指针指向的内存释放，指针本身依然占用内存，所以该指针的声明周期并未结束，指针指向的内存块还是那块被析构的指针，其值也不等于 nullptr，使用 **ptr == nullptr **并不会得到 true值。
+
+
+- 指针指向的内容生命周期已结束
+
+    针指向的内容生命周期结束之后，指针依然指向那块被释放的内存快，原理同上。
+    （空指针只是不指向任何东西，其本身依然占用内存）
+
+
+
+#### 字符串转换
+
+##### 1. const char\*
+
+* to QString
+
+    ```c++
+    const char* data = "xxx";
+    QString str = QString::fromLocal8Bit(data);
+    ```
+
+* to std::string
+
+    ```c++
+    const char* data = "xxx";
+    std::string str = data;
+    ```
+
+* to char\*
+
+    ```c++
+    const char* data = "xxx";
+    char* str = (char*)data;
+    ```
+
+* to CString (MFC)
+
+    ```c++
+    const char* data = "xxx";
+    char* str = (char*)data;
+    CString cstr = _T(str);
+    ```
+
+##### 2. std::string
+
+* to QString
+
+    ```c++
+    std::string str = "xxx";
+    QString string = QString::fromStdString(str);
+    
+    // 中文乱码时
+    std::string str = "这是一个字符串";
+    QByteArray array = QByteArray::fromStdString(str);
+    QString string = QString::fromLocal8Bit(array);
+    ```
+
+* to const char\*
+
+    ```c++
+    std::string str = "xxx";
+    const char* = str.c_str();
+    ```
+
+* to CString (MFC)
+
+    ```c++
+    std::string str="test";
+    CString cstrTest;
+    cstrTest= CA2W(str.c_str());
+    ```
+
+##### 3. QString
+
+* std::string
+
+    ```c++
+    QString str = "xxx";
+    std::string string = str.toStdString();
+    ```
+
+* to const char\*
+
+    ```c++
+    QString str = "xxx";
+    QByteArray byte = str.toLocal8Bit();
+    const char* data = byte.data();
+    ```
+
+##### 4. CString
+
+* to std::string
+
+        CString cstr = CString("xxx");
+        std::string str = CStringA(cstr);
+
+##### 5. LPWSTR
+
+* to char\*
+
+        LPWSTR path = xxx;
+        int nInputStrLen = wcslen(path);
+        int nOutputStrLen = WideCharToMultiByte(CP_ACP, 0, path, nInputStrLen, NULL, 0, 0, 0) + 2;
+        char* data = new char[nOutputStrLen];
+        if (data != nullptr)
+        {
+        	memset(data, 0x00, nOutputStrLen);
+        	WideCharToMultiByte(CP_ACP, 0, path, nInputStrLen, data, nOutputStrLen, 0, 0);
+        }
+
+
+
+#### 函数返回const char\* 乱码
+
+踩坑场景： string 直接转 const char\* 作为函数返回值有可能会乱码，本人踩坑时，场景是返回字符串长度不超过15就会乱码。
+
+```cpp
+const char* myfunction()
+{
+    std::string str = "This is a test string";
+    const char* data = str.c_str();
+    return data;
+}
+```
+
+解决方案：
+
+```cpp
+const char* myfunction()
+{
+    std::string str = "This is a test string";
+    int sum = str.length();
+    char* dataArray = new char[sum];
+    for (int i = 0; i < sum; ++i)
+    {
+        dataArray[i] = str[i];
+    }
+    dataArray[sum] = '\0';          //添加结束符
+    const char* data = dataArray();
+    return data;
+}
+```
+
+
+
+
+
+
+
 
 
 
