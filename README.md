@@ -1,2 +1,2 @@
 # DevTips
-There are some tips about Qt or C++ program developing
+There are some tips about Qt or C++ program development.
