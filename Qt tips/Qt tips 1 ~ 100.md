@@ -6,7 +6,7 @@ QTableWidget 有个 keyboardSearch 的虚函数，在表格上打字会自动锁
 protected:
     void keyboardSearch(const QString &search);
 
-void QCTableWidget ::keyboardSearch(const QString &search)
+void QCTableWidget::keyboardSearch(const QString &search)
 {
     Q_UNUSED(search);
 }
@@ -50,4 +50,16 @@ QComboBox QAbstractItemView::item
 	min-height:40px;
 }
 ```
+
+
+
+#### 4.  槽函数重载
+
+槽函数有重载时，在使用 Qt5 的方式连接信号槽时需要强类型转换，转换成带参数类型的函数指针。
+
+```
+connect(sender, &ClassA::signal, recevier, static_cast<void (ClassB::*)()>(&ClassB::slot));
+```
+
+
 
