@@ -6,7 +6,7 @@ QTableWidget 有个 keyboardSearch 的虚函数，在表格上打字会自动锁
 protected:
     void keyboardSearch(const QString &search);
 
-void QCTableWidget ::keyboardSearch(const QString &search)
+void QCTableWidget::keyboardSearch(const QString &search)
 {
     Q_UNUSED(search);
 }
@@ -50,4 +50,3 @@ QComboBox QAbstractItemView::item
 	min-height:40px;
 }
 ```
-
