@@ -31,3 +31,23 @@ void QCComboBox::hidePopup()
 }
 ```
 
+
+
+#### 3. QComboBox 设置 item 高度
+
+暂时没发现 QComboBox 可以通过 QSS 样式表直接设置 item 高度，可以给 QComboBox  重新设置一个 QListView ，然后再通过 QSS 样式表设置 QListView  的 item 高度。
+
+```
+ui->comboBox->setView(new QListView());
+
+QComboBox QAbstractItemView 
+{
+	...
+}
+QComboBox QAbstractItemView::item
+{
+	...
+	min-height:40px;
+}
+```
+
