@@ -63,3 +63,51 @@ connect(sender, &ClassA::signal, recevier, static_cast<void (ClassB::*)()>(&Clas
 
 
 
+#### 5. pro文件调用库路径空格问题
+
+库路径为绝对路径时建议加引号，虽然可以不加引号，但是如果库路径含有空格，则必须加引号，否则报错。
+
+```
+LIBS += -L"C:/Program Files (x86)/.../..." \
+
+LIBS += $$quote(C:/Program Files (x86)/.../xxx.Lib)     //quote()函数的功能就是加引号
+```
+
+
+
+#### 6. QTableWidget 获取选中行列
+
+```
+QList<int> MyTable::getSeletedRows()
+{
+    QList<int> list;
+    QList<QTableWidgetSelectionRange> ranges = ui->tableWidget->selectedRanges();
+    for (auto &range : ranges)
+    {
+        //选中的区域最上面一行到最下面一行
+        for (auto row = range.topRow(); row <= range.bottomRow(); ++row)
+        {
+            list << row; 
+        }
+        
+        //选中的区域最左边一行到最右边一列
+        for (auto row = range.leftColumn(); row <= range.rightColumn(); ++row)
+        {
+            list << row;
+        }
+        
+        //ps: 遍历的时候中间用“<=”, 不是"<", 也不是"!="
+    }
+    return list;
+}
+```
+
+
+
+#### 7. 正则表达式限制 QLineEdit 输入
+
+```
+QString re = "^(0|1|0\\.|0\\.[0-9]|0\\.[0-9][0-9]|1\\.0|1\\.00)$";
+m_pLineEdit->setValidator(new QRegularExpressionValidator(QRegularExpression(rxSmoothStrebgthValue)));
+```
+

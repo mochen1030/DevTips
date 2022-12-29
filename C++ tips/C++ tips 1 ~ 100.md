@@ -150,9 +150,187 @@ int const *q;
 
 
 
+#### 2. 字符串转换
+
+1. **const char\***
+
+- to QString
+
+  ```
+  const char* data = "xxx";
+  QString str = QString::fromLocal8Bit(data);
+  ```
+
+- to std::string
+
+  ```
+  const char* data = "xxx";
+  std::string str = data;
+  ```
+
+- to char\*
+
+  ```
+  const char* data = "xxx";
+  char* str = (char*)data;
+  ```
+
+- to CString
+
+  ```
+  const char* data = "xxx";
+  char* str = (char*)data;
+  CString cstr = _T(str);
+  ```
 
 
 
+2. **std::string**
+
+- to QString
+
+  ```
+  std::string str = "xxx";
+  QString string = QString::fromStdString(str);
+  
+  //中文乱码时
+  std::string str = "这是一个字符串";
+  QByteArray array = QByteArray::fromStdString(str);
+  QString string = QString::fromLocal8Bit(array);
+  ```
+
+- const char\*
+
+  ```
+  std::string str = "xxx";
+  const char* = str.c_str();
+  ```
+
+- to CString
+
+  ```
+  std::string str="test";
+  CString cstrTest;
+  cstrTest= CA2W(str.c_str());
+  ```
+
+
+
+3. **QString**
+
+- to std::string
+
+  ```
+  QString str = "xxx";
+  std::string string = str.toStdString();
+  ```
+
+- to const char\*
+
+  ```
+  QString str = "xxx";
+  QByteArray byte = str.toLocal8Bit();
+  const char* data = byte.data();
+  ```
+
+
+
+4. **CString**
+
+- to std::string
+
+  ```
+  CString cstr = CString("xxx");
+  std::string str = CStringA(cstr);
+  ```
+
+
+
+5. **LPWSTR**
+
+- to char*
+
+  ```
+  LPWSTR path = xxx;
+  int nInputStrLen = wcslen(path);
+  int nOutputStrLen = WideCharToMultiByte(CP_ACP, 0, path, nInputStrLen, NULL, 0, 0, 0) + 2;
+  char* data = new char[nOutputStrLen];
+  if (data != nullptr)
+  {
+      memset(data, 0x00, nOutputStrLen);
+      WideCharToMultiByte(CP_ACP, 0, path, nInputStrLen, data, nOutputStrLen, 0, 0);
+  }
+  ```
+
+
+
+#### 3. void\* 指针
+
+- **void**
+
+  函数无返回值，返回类型为 void
+  函数无参数，参数列表为 void，通常省略
+  void 类型的变量无意义，一般编译器会报错。把变量强制转换成 void，可以避免参数未使用的警告
+
+- void\*
+
+
+
+void*
+函数返回值类型是void*，可以返回任何类型的指针，但必须返回一个指针。可以返回为空指针，但是不能返回为空。
+函数的参数类型是void*，可以传递任何类型的指针
+void*类型的指针无类型，可以被任何类型的指针赋值。
+Tips
+void*指针需要强制类型转换之后才可以赋值/传参给其他类型的指针,反之不需要。
+void*指针可以直接和其他类型的指针进行地址的比对。
+void*指针需要强制类型转换之后才可以对其进行操作。
+void*指针可以初始化为空指针nullptr。
+void*指针不能进行算术操作（算术类型的指针进行算术操作，解引用后可以得到其他的数值）
+函数指针
+基本概念
+指针函数：指针函数本质是函数，该函数的返回值类型是指针。 QPushButton* generateButton(QString qsText) { QPushButton* btn = new QpushButton(); btn->setText(qsText); return btn; }
+
+函数指针：函数指针本质是指针，该指针指向某一函数的首地址。 #include <iostream>
+
+int testFuntion(int a, int b)
+{
+    return a + b;
+}
+
+int func(int c, int d, int (*pFunc)(int, int))
+{
+    return (*pFunc)(c, d);
+    //return pFunc(c, d);
+}
+
+int main(int argc, char *argv[])
+{
+    //声明一个函数指针，并用函数名初始化，该指针指向函数testFuntion的首地址
+    //C++会隐式地将函数名testFuntion转换成&testFuntion，所以函数指针初始化的时候可以省略&
+    int (*ptr)(int, int);
+    ptr = testFuntion;
+
+    //也可以像一般指针类型一样直接声明并初始化
+    //int (*ptr)(int, int) = testFuntion;    
+    
+    //输出地址内容一致（可能会输出1或true，取决于是否用了boolalpha，因为隐式转换到bool）
+    std::cout << "testFuntion:" << testFuntion << std::endl;
+    std::cout << "ptr:" << ptr << std::endl;
+    
+    //通过函数指针调用函数
+    std::cout << "ptr result:" << (*ptr)(10, 5) << std::endl;   //建议写法
+    std::cout << "ptr result:" << ptr(10, 5) << std::endl;      //一般编译器不会报错
+    
+    //这样类似于函数指针分方式调用函数也是可以的，但是不建议这么写
+    std::cout << "testFuntion result:" << (*testFuntion)(10, 5) << std::endl;
+    std::cout << "testFuntion result:" << testFuntion(10, 5) << std::endl;
+    
+    //函数指针作为函数的参数传递
+    std::cout << "func:" << func(99, 111, ptr) << std::endl;
+    std::cout << "func:" << func(99, 111, testFuntion) << std::endl;
+    
+    return 0;
+}
 
 
 
