@@ -170,22 +170,7 @@
 
    ![6_OpenVR](VTK-9.2.2 源码编译教程_img/6_OpenVR.png)
 
-10. FontConfig 报错
-
-    ```
-    CMake Error at CMake/vtkModule.cmake:4578 (message):
-      Could not find the FontConfig external dependency.
-    Call Stack (most recent call first):
-      Rendering/FreeTypeFontConfig/CMakeLists.txt:18 (vtk_module_find_package)
-    ```
-
-    下载 FontConfig ：[libfontconfig_2.14.1_msvc15](https://github.com/ShiftMediaProject/fontconfig/releases/tag/2.14.1)
-
-    CMake 配置 FontConfig
-
-    ![7_FontConfig](VTK-9.2.2 源码编译教程_img/7_FontConfig.png)
-
-11. PostgreSQL 报错
+10. PostgreSQL 报错
 
     ```
     CMake Error at CMake/vtkModule.cmake:4578 (message):
@@ -200,7 +185,7 @@
 
     ![8_PostgreSQL](VTK-9.2.2 源码编译教程_img/8_PostgreSQL.png)
 
-12. PDAL 报错
+11. PDAL 报错
 
     ```
     CMake Error at CMake/vtkModule.cmake:4578 (message):
@@ -209,9 +194,27 @@
       IO/PDAL/CMakeLists.txt:1 (vtk_module_find_package)
     ```
 
-    
+    PDAL 官网提示使用 conda 下载 PDAL：[PDAL download](https://pdal.io/en/stable/download.html#windows)
 
-13. OpenImageDenoise 报错
+    ![9_Conda](VTK-9.2.2 源码编译教程_img/9_Conda.png)
+
+    - 下载 conda：[Miniconda installer for Windows](https://conda.io/miniconda.html)
+
+      配置环境变量：E:\Miniconda3、E:\Miniconda3\Scripts
+
+      打开 cmd，输入 `conda list` 验证是否安装成功
+
+    - 安装 PDAL：[conda-forge/packages/pdal 2.4.3](https://anaconda.org/conda-forge/pdal)
+
+      cmd 中输入命令 `conda install -c conda-forge pdal` 安装 PDAL
+
+      安装完成后的包存放在 conda 安装目录的 pkgs 文件目录下
+
+    - CMake 配置 PADL 路径
+
+      ![10_PDAL](VTK-9.2.2 源码编译教程_img/10_PDAL.png)
+
+12. OpenImageDenoise 报错
 
     ```
     CMake Error at CMake/vtkModule.cmake:4578 (message):
@@ -222,7 +225,33 @@
 
     下载 OpenImageDenoise：[Open Image Denoise v1.4.3](https://github.com/OpenImageDenoise/oidn/releases/tag/v1.4.3)
 
-14. 
+13. FontConfig 报错
+
+    ```
+    CMake Error at CMake/vtkModule.cmake:4578 (message):
+      Could not find the FontConfig external dependency.
+    Call Stack (most recent call first):
+      Rendering/FreeTypeFontConfig/CMakeLists.txt:18 (vtk_module_find_package)
+    ```
+
+    安装 PADL 时，conda 已经下载 FontConfig
+
+    CMake 配置 FontConfig
+
+    ![7_FontConfig](VTK-9.2.2 源码编译教程_img/7_FontConfig.png)
+
+14. OpenVDB 报错
+
+    ```
+    CMake Error at CMake/vtkModule.cmake:4578 (message):
+      Could not find the OpenVDB external dependency.
+    Call Stack (most recent call first):
+      IO/OpenVDB/CMakeLists.txt:9 (vtk_module_find_package)
+    ```
+
+    
+
+15. 
 
 
 
