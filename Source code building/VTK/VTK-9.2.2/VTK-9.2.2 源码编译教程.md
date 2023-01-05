@@ -37,221 +37,223 @@
 
    编译 VTK 所有模块，勾选
 
-5. FFmpeg 报错
 
-   ```
-   CMake Error at CMake/vtkModule.cmake:4578 (message):
-     Could not find the FFMPEG external dependency.
-   Call Stack (most recent call first):
-     IO/FFMPEG/CMakeLists.txt:1 (vtk_module_find_package)
-   ```
 
-   FFmpeg 下载：[FFmpeg-n5.1.2-9-win64-lgpl-shared](https://github.com/BtbN/FFmpeg-Builds/releases/download/autobuild-2023-01-02-12-37/ffmpeg-n5.1.2-9-g807afa59cc-win64-lgpl-shared-5.1.zip)
+### 3.报错解决
 
-   CMake 配置 FFmpeg
+#### 3.1 FFmpeg 报错
 
-   ![2_FFmpeg](VTK-9.2.2 源码编译教程_img/2_FFmpeg.png)
+```
+CMake Error at CMake/vtkModule.cmake:4578 (message):
+  Could not find the FFMPEG external dependency.
+Call Stack (most recent call first):
+  IO/FFMPEG/CMakeLists.txt:1 (vtk_module_find_package)
+```
 
-6. Boost 报错
+FFmpeg 下载：[FFmpeg-n5.1.2-9-win64-lgpl-shared](https://github.com/BtbN/FFmpeg-Builds/releases/download/autobuild-2023-01-02-12-37/ffmpeg-n5.1.2-9-g807afa59cc-win64-lgpl-shared-5.1.zip)
 
-   ```
-   CMake Error at CMake/vtkModule.cmake:4578 (message):
-     Could not find the Boost external dependency.
-   Call Stack (most recent call first):
-     Infovis/BoostGraphAlgorithms/CMakeLists.txt:23 (vtk_module_find_package)
-   ```
+CMake 配置 FFmpeg
 
-   下载 boost 以及相关库：
+![2_FFmpeg](VTK-9.2.2 源码编译教程_img/2_FFmpeg.png)
 
-   - 下载 Boost：[boost_1_80_0-msvc-14.1-64.exe](https://boostorg.jfrog.io/artifactory/main/release/1.80.0/binaries/)
+#### 3.2 Boost 报错
 
-     下载完成后安装 boost，在 boost 安装路径中新建 build、temp 文件夹
+```
+CMake Error at CMake/vtkModule.cmake:4578 (message):
+  Could not find the Boost external dependency.
+Call Stack (most recent call first):
+  Infovis/BoostGraphAlgorithms/CMakeLists.txt:23 (vtk_module_find_package)
+```
 
-   - 下载 zlib：[zlib-1.2.13](https://github.com/madler/zlib/releases/tag/v1.2.13)
+下载 boost 以及相关库：
 
-   - 下载 bzip2：[bzip2-1.0.8](https://github.com/libarchive/bzip2/releases/tag/bzip2-1.0.8)
+- 下载 Boost：[boost_1_80_0-msvc-14.1-64.exe](https://boostorg.jfrog.io/artifactory/main/release/1.80.0/binaries/)
 
-   编译 boost：
+  下载完成后安装 boost，在 boost 安装路径中新建 build、temp 文件夹
 
-   - 将 zlib、bzip2 源码文件夹放到 boost 安装路径下
+- 下载 zlib：[zlib-1.2.13](https://github.com/madler/zlib/releases/tag/v1.2.13)
 
-   - 开始菜单中 Visual Sdudio 2017 文件夹下找到 “适用于 VS 2017 的 x86_x64 兼容工具命令提示”，以管理员身份运行
+- 下载 bzip2：[bzip2-1.0.8](https://github.com/libarchive/bzip2/releases/tag/bzip2-1.0.8)
 
-   - 切换到 boost 安装目录
+编译 boost：
 
-     ```
-     cd /d G:\Tools\boost_1_80_0
-     ```
+- 将 zlib、bzip2 源码文件夹放到 boost 安装路径下
 
-   - 按 Tab 键切换到 bootstrap.bat，回车，等待命令执行完成
+- 开始菜单中 Visual Sdudio 2017 文件夹下找到 “适用于 VS 2017 的 x86_x64 兼容工具命令提示”，以管理员身份运行
 
-   - 键入 boost 编译命令，等待编译完成
+- 切换到 boost 安装目录
 
-     ```
-     b2 install --toolset=msvc-14.1 --prefix="G:\Tools\boost_1_80_0\build" --build-dir="G:\Tools\boost_1_80_0\temp" architecture=x86 address-model=64 link=static runtime-link=shared threading=multi variant=release
-     ```
+  ```
+  cd /d G:\Tools\boost_1_80_0
+  ```
 
-     boost 默认无 zlib 和 bzip2，再次执行命令编译 zlib 和 bzip2
+- 按 Tab 键切换到 bootstrap.bat，回车，等待命令执行完成
 
-     ```
-     b2 install --toolset=msvc-14.1 --with-iostreams -s BZIP2_SOURCE="G:\Tools\bzip2-1.0.8" -s ZLIB_SOURCE="G:\Tools\zlib-1.2.13" --toolset=msvc-14.1 --prefix="G:\Tools\boost_1_80_0\build" --build-dir="G:\Tools\boost_1_80_0\temp" architecture=x86 address-model=64 link=static runtime-link=shared threading=multi variant=release
-     ```
+- 键入 boost 编译命令，等待编译完成
 
-     ps：
+  ```
+  b2 install --toolset=msvc-14.1 --prefix="G:\Tools\boost_1_80_0\build" --build-dir="G:\Tools\boost_1_80_0\temp" architecture=x86 address-model=64 link=static runtime-link=shared threading=multi variant=release
+  ```
 
-     关于命令的详细信息，可以输入 `b2 --help` 查看
+  boost 默认无 zlib 和 bzip2，再次执行命令编译 zlib 和 bzip2
 
-     --toolset=msvc-14.1：编译工具集，VS 2017 是 msvc-14.1
+  ```
+  b2 install --toolset=msvc-14.1 --with-iostreams -s BZIP2_SOURCE="G:\Tools\bzip2-1.0.8" -s ZLIB_SOURCE="G:\Tools\zlib-1.2.13" --toolset=msvc-14.1 --prefix="G:\Tools\boost_1_80_0\build" --build-dir="G:\Tools\boost_1_80_0\temp" architecture=x86 address-model=64 link=static runtime-link=shared threading=multi variant=release
+  ```
 
-     --prefix="G:\Tools\boost_1_80_0\build"：boost 编译输出路径，换成自己的
+  ps：
 
-     --build-dir="G:\Tools\boost_1_80_0\temp"：编译临时文件路径，换成自己的
+  关于命令的详细信息，可以输入 `b2 --help` 查看
 
-     BZIP2_SOURCE="G:\Tools\bzip2-1.0.8"：bzip2 源码路径，换成自己的
+  --toolset=msvc-14.1：编译工具集，VS 2017 是 msvc-14.1
 
-     ZLIB_SOURCE="G:\Tools\zlib-1.2.13"：zlib 源码路径，换成自己的
+  --prefix="G:\Tools\boost_1_80_0\build"：boost 编译输出路径，换成自己的
 
-     architecture=x86 address-model=64：x86 架构，编译 64 位库
+  --build-dir="G:\Tools\boost_1_80_0\temp"：编译临时文件路径，换成自己的
 
-     link=static：编译 boost 静态库
+  BZIP2_SOURCE="G:\Tools\bzip2-1.0.8"：bzip2 源码路径，换成自己的
 
-     runtime-link=shared：动态链接 C++ 运行时库
+  ZLIB_SOURCE="G:\Tools\zlib-1.2.13"：zlib 源码路径，换成自己的
 
-     threading=multi：使用多线程编译
+  architecture=x86 address-model=64：x86 架构，编译 64 位库
 
-     variant=release：编译 release 版本库
+  link=static：编译 boost 静态库
 
-   - CMake 配置 boost 路径
+  runtime-link=shared：动态链接 C++ 运行时库
 
-     ![3_Boost](VTK-9.2.2 源码编译教程_img/3_Boost.png)
+  threading=multi：使用多线程编译
 
-7. ospray 报错
+  variant=release：编译 release 版本库
 
-   ```
-   osprayCMake Error at CMake/vtkModule.cmake:4578 (message):
-     Could not find the ospray external dependency.
-   Call Stack (most recent call first):
-     Rendering/RayTracing/CMakeLists.txt:58 (vtk_module_find_package)
-   ```
+- CMake 配置 boost 路径
 
-   下载 ospray ：[ospray 2.1.1](https://github.com/ospray/OSPRay/releases?page=2)
+  ![3_Boost](VTK-9.2.2 源码编译教程_img/3_Boost.png)
 
-   CMake 配置 ospray
+#### 3.3 ospray 报错
 
-   ![4_ospray](VTK-9.2.2 源码编译教程_img/4_ospray.png)
+```
+osprayCMake Error at CMake/vtkModule.cmake:4578 (message):
+  Could not find the ospray external dependency.
+Call Stack (most recent call first):
+  Rendering/RayTracing/CMakeLists.txt:58 (vtk_module_find_package)
+```
 
-8. OpenXR 报错
+下载 ospray ：[ospray 2.1.1](https://github.com/ospray/OSPRay/releases?page=2)
 
-   ```
-   CMake Error at CMake/vtkModule.cmake:4578 (message):
-     Could not find the OpenXR external dependency.
-   Call Stack (most recent call first):
-     Rendering/OpenXR/CMakeLists.txt:1 (vtk_module_find_package)
-   ```
+CMake 配置 ospray
 
-   下载 OpenXR：OpenXRhttps://github.com/KhronosGroup/OpenXR-SDK/releases/tag/release-1.0.26
+![4_ospray](VTK-9.2.2 源码编译教程_img/4_ospray.png)
 
-   CMake 配置 OpenXR
+#### 3.4 OpenXR 报错
 
-   ![5_OpenXR](VTK-9.2.2 源码编译教程_img/5_OpenXR.png)
+```
+CMake Error at CMake/vtkModule.cmake:4578 (message):
+  Could not find the OpenXR external dependency.
+Call Stack (most recent call first):
+  Rendering/OpenXR/CMakeLists.txt:1 (vtk_module_find_package)
+```
 
-9. OpenXR 报错
+下载 OpenXR：OpenXRhttps://github.com/KhronosGroup/OpenXR-SDK/releases/tag/release-1.0.26
 
-   ```
-   CMake Error at CMake/vtkModule.cmake:4578 (message):
-     Could not find the OpenVR external dependency.
-   Call Stack (most recent call first):
-     Rendering/OpenVR/CMakeLists.txt:1 (vtk_module_find_package)
-   ```
+CMake 配置 OpenXR
 
-   下载 OpenVR：[OpenVR](https://github.com/ValveSoftware/openvr/releases)
+![5_OpenXR](VTK-9.2.2 源码编译教程_img/5_OpenXR.png)
 
-   CMake 配置 OpenVR
+#### 3.5 OpenXR 报错
 
-   ![6_OpenVR](VTK-9.2.2 源码编译教程_img/6_OpenVR.png)
+```
+CMake Error at CMake/vtkModule.cmake:4578 (message):
+  Could not find the OpenVR external dependency.
+Call Stack (most recent call first):
+  Rendering/OpenVR/CMakeLists.txt:1 (vtk_module_find_package)
+```
 
-10. PostgreSQL 报错
+下载 OpenVR：[OpenVR](https://github.com/ValveSoftware/openvr/releases)
 
-    ```
-    CMake Error at CMake/vtkModule.cmake:4578 (message):
-      Could not find the PostgreSQL external dependency.
-    Call Stack (most recent call first):
-      IO/PostgreSQL/CMakeLists.txt:1 (vtk_module_find_package)
-    ```
+CMake 配置 OpenVR
 
-    PostgreSQL：[PostgreSQL 15](https://www.enterprisedb.com/download-postgresql-binaries)
+![6_OpenVR](VTK-9.2.2 源码编译教程_img/6_OpenVR.png)
 
-    CMake 配置 PostgreSQL
+#### 3.6 PostgreSQL 报错
 
-    ![8_PostgreSQL](VTK-9.2.2 源码编译教程_img/8_PostgreSQL.png)
+```
+CMake Error at CMake/vtkModule.cmake:4578 (message):
+  Could not find the PostgreSQL external dependency.
+Call Stack (most recent call first):
+  IO/PostgreSQL/CMakeLists.txt:1 (vtk_module_find_package)
+```
 
-11. PDAL 报错
+PostgreSQL：[PostgreSQL 15](https://www.enterprisedb.com/download-postgresql-binaries)
 
-    ```
-    CMake Error at CMake/vtkModule.cmake:4578 (message):
-      Could not find the PDAL external dependency.
-    Call Stack (most recent call first):
-      IO/PDAL/CMakeLists.txt:1 (vtk_module_find_package)
-    ```
+CMake 配置 PostgreSQL
 
-    PDAL 官网提示使用 conda 下载 PDAL：[PDAL download](https://pdal.io/en/stable/download.html#windows)
+![8_PostgreSQL](VTK-9.2.2 源码编译教程_img/8_PostgreSQL.png)
 
-    ![9_Conda](VTK-9.2.2 源码编译教程_img/9_Conda.png)
+#### 3.7 PDAL 报错
 
-    - 下载 conda：[Miniconda installer for Windows](https://conda.io/miniconda.html)
+```
+CMake Error at CMake/vtkModule.cmake:4578 (message):
+  Could not find the PDAL external dependency.
+Call Stack (most recent call first):
+  IO/PDAL/CMakeLists.txt:1 (vtk_module_find_package)
+```
 
-      配置环境变量：E:\Miniconda3、E:\Miniconda3\Scripts
+PDAL 官网提示使用 conda 下载 PDAL：[PDAL download](https://pdal.io/en/stable/download.html#windows)
 
-      打开 cmd，输入 `conda list` 验证是否安装成功
+![9_Conda](VTK-9.2.2 源码编译教程_img/9_Conda.png)
 
-    - 安装 PDAL：[conda-forge/packages/pdal 2.4.3](https://anaconda.org/conda-forge/pdal)
+- 下载 conda：[Miniconda installer for Windows](https://conda.io/miniconda.html)
 
-      cmd 中输入命令 `conda install -c conda-forge pdal` 安装 PDAL
+  配置环境变量：E:\Miniconda3、E:\Miniconda3\Scripts
 
-      安装完成后的包存放在 conda 安装目录的 pkgs 文件目录下
+  打开 cmd，输入 `conda list` 验证是否安装成功
 
-    - CMake 配置 PADL 路径
+- 安装 PDAL：[conda-forge/packages/pdal 2.4.3](https://anaconda.org/conda-forge/pdal)
 
-      ![10_PDAL](VTK-9.2.2 源码编译教程_img/10_PDAL.png)
+  cmd 中输入命令 `conda install -c conda-forge pdal` 安装 PDAL
 
-12. OpenImageDenoise 报错
+  安装完成后的包存放在 conda 安装目录的 pkgs 文件目录下
 
-    ```
-    CMake Error at CMake/vtkModule.cmake:4578 (message):
-      Could not find the OpenImageDenoise external dependency.
-    Call Stack (most recent call first):
-      Rendering/RayTracing/CMakeLists.txt:67 (vtk_module_find_package)
-    ```
+- CMake 配置 PADL 路径
 
-    下载 OpenImageDenoise：[Open Image Denoise v1.4.3](https://github.com/OpenImageDenoise/oidn/releases/tag/v1.4.3)
+  ![10_PDAL](VTK-9.2.2 源码编译教程_img/10_PDAL.png)
 
-13. FontConfig 报错
+#### 3.8 OpenImageDenoise 报错
 
-    ```
-    CMake Error at CMake/vtkModule.cmake:4578 (message):
-      Could not find the FontConfig external dependency.
-    Call Stack (most recent call first):
-      Rendering/FreeTypeFontConfig/CMakeLists.txt:18 (vtk_module_find_package)
-    ```
+```
+CMake Error at CMake/vtkModule.cmake:4578 (message):
+  Could not find the OpenImageDenoise external dependency.
+Call Stack (most recent call first):
+  Rendering/RayTracing/CMakeLists.txt:67 (vtk_module_find_package)
+```
 
-    安装 PADL 时，conda 已经下载 FontConfig
+下载 OpenImageDenoise：[Open Image Denoise v1.4.3](https://github.com/OpenImageDenoise/oidn/releases/tag/v1.4.3)
 
-    CMake 配置 FontConfig
+#### 3.9 FontConfig 报错
 
-    ![7_FontConfig](VTK-9.2.2 源码编译教程_img/7_FontConfig.png)
+```
+CMake Error at CMake/vtkModule.cmake:4578 (message):
+  Could not find the FontConfig external dependency.
+Call Stack (most recent call first):
+  Rendering/FreeTypeFontConfig/CMakeLists.txt:18 (vtk_module_find_package)
+```
 
-14. OpenVDB 报错
+安装 PADL 时，conda 已经下载 FontConfig
 
-    ```
-    CMake Error at CMake/vtkModule.cmake:4578 (message):
-      Could not find the OpenVDB external dependency.
-    Call Stack (most recent call first):
-      IO/OpenVDB/CMakeLists.txt:9 (vtk_module_find_package)
-    ```
+CMake 配置 FontConfig
 
-    
+![7_FontConfig](VTK-9.2.2 源码编译教程_img/7_FontConfig.png)
 
-15. 
+#### 3.10 OpenVDB 报错
+
+```
+CMake Error at CMake/vtkModule.cmake:4578 (message):
+  Could not find the OpenVDB external dependency.
+Call Stack (most recent call first):
+  IO/OpenVDB/CMakeLists.txt:9 (vtk_module_find_package)
+```
+
+
 
 
 
