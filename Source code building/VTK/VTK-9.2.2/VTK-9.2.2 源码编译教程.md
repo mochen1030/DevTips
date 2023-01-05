@@ -253,7 +253,134 @@ Call Stack (most recent call first):
   IO/OpenVDB/CMakeLists.txt:9 (vtk_module_find_package)
 ```
 
+使用 vcpkg 下载 OpenVDB
+
+X_VCPKG_ASSET_SOURCES=x-azurl,http://106.15.181.5/ 
+
+VCPKG_DEFAULT_TRIPLET=x64-windows
+
+vcpkg install openvdb --only-downloads 
+
+vcpkg install openvdb
+
+#### 3.11 ODBC 报错
+
+```
+CMake Error at CMake/vtkModule.cmake:4578 (message):
+  Could not find the ODBC external dependency.
+Call Stack (most recent call first):
+  IO/ODBC/CMakeLists.txt:9 (vtk_module_find_package)
+```
+
+#### 3.12 MySQL 报错
+
+```
+CMake Error at CMake/vtkModule.cmake:4578 (message):
+  Could not find the MySQL external dependency.
+Call Stack (most recent call first):
+  IO/MySQL/CMakeLists.txt:14 (vtk_module_find_package)
+```
+
+#### 3.12 libLAS 报错
+
+```
+CMake Error at CMake/vtkModule.cmake:4578 (message):
+  Could not find the libLAS external dependency.
+Call Stack (most recent call first):
+  IO/LAS/CMakeLists.txt:1 (vtk_module_find_package)
+```
+
+vcpkg
+
+#### 3.13 ADIOS2 报错
+
+```
+CMake Error at CMake/vtkModule.cmake:4578 (message):
+  Could not find the ADIOS2 external dependency.
+Call Stack (most recent call first):
+  ThirdParty/fides/vtkfides/CMakeLists.txt:32 (vtk_module_find_package)
+```
+
+ADIOS2 官网提示使用 conda 安装：[conda-forge adios2](https://anaconda.org/conda-forge/adios2)
+
+安装 ADIOS2：cmd 中输入命令 `conda install -c conda-forge adios2`
+
+CMale 配置 ADIOS2（会下载两个文件夹，一个是 adios2 开头，一个是 libadios2 开头，配置后者路径）
+
+![libadios2](VTK-9.2.2 源码编译教程_img/libadios2.png)
+
+#### 3.14 GDAL 报错
+
+```
+CMake Error at CMake/vtkModule.cmake:4578 (message):
+  Could not find the GDAL external dependency.
+Call Stack (most recent call first):
+  IO/GDAL/CMakeLists.txt:1 (vtk_module_find_package)
+```
+
+conda 的安装路径下 pkg 文件夹有 gdal 的库文件，可以直接使用
+
+CMake 配置 gdal
+
+![gdal](VTK-9.2.2 源码编译教程_img/gdal.png)
+
+#### 3.15 OpenTURNS 报错
+
+```
+CMake Error at Filters/OpenTURNS/CMakeLists.txt:1 (find_package):
+  By not providing "FindOpenTURNS.cmake" in CMAKE_MODULE_PATH this project
+  has asked CMake to find a package configuration file provided by
+  "OpenTURNS", but CMake did not find one.
+
+  Could not find a package configuration file provided by "OpenTURNS"
+  (requested version 1.8) with any of the following names:
+
+    OpenTURNSConfig.cmake
+    openturns-config.cmake
+
+  Add the installation prefix of "OpenTURNS" to CMAKE_PREFIX_PATH or set
+  "OpenTURNS_DIR" to a directory containing one of the above files.  If
+  "OpenTURNS" provides a separate development package or SDK, be sure it has
+  been installed.
+```
+
+#### 3.16 OpenSlide 报错
+
+```
+CMake Error at CMake/vtkModule.cmake:4578 (message):
+  Could not find the OpenSlide external dependency.
+Call Stack (most recent call first):
+  Domains/Microscopy/CMakeLists.txt:7 (vtk_module_find_package)
+```
+
+下载 OpenSlide：[OpenSlide download](https://openslide.org/download/)
+
+CMake 配置 OpenSlide
+
+![OpenSlide](VTK-9.2.2 源码编译教程_img/OpenSlide.png)
+
+#### 3.17 LibArchive 报错
+
+```
+CMake Error at CMake/vtkModule.cmake:4578 (message):
+  Could not find the LibArchive external dependency.
+Call Stack (most recent call first):
+  Common/Archive/CMakeLists.txt:5 (vtk_module_find_package)
+```
+
+下载 LibArchive：[LibArchive-3.6.2](https://www.libarchive.org/)
+
+CMake 配置 LibArchive
+
+![LibArchive](VTK-9.2.2 源码编译教程_img/LibArchive.png)
 
 
 
+### 4.VS 编译
+
+构建成功 `Configuring done` 之后点击【Generate】生成 VS 工程，点击【Open Project】打开项目。
+
+项目配置切换至 `Release x64`，解决方案资源管理器 `ALL BUILD` 处右键【生成】，等待生成完成。
+
+解决方案资源管理器 `INSTALL` 处右键【生成】，编译完成后的文件在 `CMAKE_INSTALL_PREFIX ` 路路径
 
