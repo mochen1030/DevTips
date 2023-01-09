@@ -230,7 +230,10 @@ int const *q;
   ```
   QString str = "xxx";
   QByteArray byte = str.toLocal8Bit();
+  
   const char* data = byte.data();
+  or
+  const char* data = str.toStdString().c_str();
   ```
 
 
