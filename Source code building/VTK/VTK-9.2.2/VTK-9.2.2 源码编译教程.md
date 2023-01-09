@@ -50,7 +50,7 @@ Call Stack (most recent call first):
   IO/FFMPEG/CMakeLists.txt:1 (vtk_module_find_package)
 ```
 
-FFmpeg 下载：[FFmpeg-n5.1.2-9-win64-lgpl-shared](https://github.com/BtbN/FFmpeg-Builds/releases/download/autobuild-2023-01-02-12-37/ffmpeg-n5.1.2-9-g807afa59cc-win64-lgpl-shared-5.1.zip)
+FFmpeg 下载：[FFmpeg-n5.1.2-9-win64-lgpl-shared](https://github.com/BtbN/FFmpeg-Builds/releases)
 
 CMake 配置 FFmpeg
 
@@ -383,4 +383,20 @@ CMake 配置 LibArchive
 项目配置切换至 `Release x64`，解决方案资源管理器 `ALL BUILD` 处右键【生成】，等待生成完成。
 
 解决方案资源管理器 `INSTALL` 处右键【生成】，编译完成后的文件在 `CMAKE_INSTALL_PREFIX ` 路路径
+
+
+
+#### 4.1 报错：找不到 pdal_base.lib
+
+项目 IOPDAL，删除 pdal_base.lib 库的调用，添加库 G:\Tools\pdal-2.4.3\lib\pdal_util.lib、G:\Tools\pdal-2.4.3\lib\pdalcpp.lib
+
+
+
+#### 4.2 报错：找不到头文件 xxx.h 、xxx
+
+比如：openslide 报错 找不到 openslide.h 头文件
+
+查看代码 `#include <openslide/openslide.h>`
+
+在头文件引用中 G:/Tools/openslide-win64/include/openslide 删除最后一层的 openslide 层级目录即可。
 
